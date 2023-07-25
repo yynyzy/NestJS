@@ -1,4 +1,4 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import { Controller, Get, Logger, Param, Query } from '@nestjs/common';
 import { UserService } from './service';
 import { CoreService } from '../Core/service';
 
@@ -25,11 +25,29 @@ export class UserController {
     return this.userService.getAllUser();
   }
 
+  // 交叉调用，调用 Core 下的 service
   @Get('core')
   getAllCores(): string {
     console.log('normal log');
     Logger.log('nest logger');
     this.logger.log('my nest logger');
     return this.coreService.getAllCores();
+  }
+
+  // 通过 @params 来获取 url params 参数
+  @Get('demo/:key')
+  getUrlParams(@Param('key') key: string): string {
+    console.log(`key=${key}`);
+    return `url params = ${key}`;
+  }
+
+  // 通过 @Query 来获取 url query 参数
+  // @Get('demo')
+  // getUrlQuery(@Query q: any): string {
+  //   return `url Query a=${q.a}&b=${q.b}`;
+  // }
+  @Get('demo')
+  getUrlQuery(@Query('a') a: string, @Query('b') b: number): string {
+    return `url Query a=${a}&b=${b}`;
   }
 }
