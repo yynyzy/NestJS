@@ -1,11 +1,19 @@
-import { Controller, Get, Logger, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Logger,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './service';
 import { CoreService } from '../Core/service';
+import { AuthGuard } from 'src/AuthGuard';
 
 /**
  * Logger 是 nest 自带的，可以 new Logger 来添加前缀
  */
-
+@UseGuards(new AuthGuard(100))
 @Controller('user')
 export class UserController {
   private readonly logger;
